@@ -126,6 +126,7 @@ spec:
             if(fileExists("practica_final_backend")){
                 sh 'rm -r practica_final_backend'
             }
+            sh 'npm install newman'
             sleep 15 // seconds
             sh 'git clone https://github.com/ycordovac/practica_final_backend.git practica_final_backend'
             sh 'newman run practica_final_backend/src/main/resources/bootcamp.postman_collection.json --reporters cli,junit --reporter-junit-export "newman/report.xml"'
