@@ -127,7 +127,7 @@ spec:
                 sh 'rm -r practica_final_backend'
             }
             sleep 15 // seconds
-            sh 'git clone hhttps://github.com/ycordovac/practica_final_backend.git practica_final_backend'
+            sh 'git clone https://github.com/ycordovac/practica_final_backend.git practica_final_backend'
             sh 'newman run practica_final_backend/src/main/resources/bootcamp.postman_collection.json --reporters cli,junit --reporter-junit-export "newman/report.xml"'
             junit "newman/report.xml"
 
