@@ -127,6 +127,8 @@ spec:
                 sh 'rm -r practica_final_backend'
             }
             sh 'mvn clean compile test'
+            jacoco()
+            junit target/surefire-reports/*.xml 
         }   
       }
     }
