@@ -114,11 +114,14 @@ spec:
 
     **/
 
+    /**
+
     stage('compile app') {
       steps {
             sh "mvn clean install -DskipTests"
       }
     }
+    **/
 
 /*
     stage ("Run Test") {
