@@ -62,8 +62,7 @@ spec:
           }
         }
 
-		stage("Deploy to K8s")
-		{
+		stage("Deploy to K8s"){
 			steps{
                 script {
                   if(fileExists("configuracion")){
@@ -76,14 +75,34 @@ spec:
 			}
 		}
 
-    stage("Print Java Version")
-		{
+    stage("Print Java Version"){
 			steps{
-                script {
-                  javaVersion= sh 'java --version'
-                  echo javaVersion
-                  System.err.println(javaVersion)
-                }
+        script {
+          javaVersion= sh 'java --version'
+          echo javaVersion
+          mvnVersion= sh 'mvn -version'
+          echo mvnVersion
+        }
+			}
+		}
+
+    stage("Maven version to main branch"){
+			steps{
+        script {
+          when{
+            branch 'main'
+              echo "eliminando etiqueta snapShot de la version para la rama main"
+              def pomModel = readMavenPom
+              def pomVersion = pomModel.getVersion().replace("-SNAPSHOT", "")
+              def comand='mvn versions:set -DnewVersion='+$pomVersion
+              sh comand
+              sh 'git checkout main'
+              sh 'git add .'
+              sh '''git commit -m "delete tag snapshot from maven version"'''
+              sh 'git push'
+          }
+
+        }
 			}
 		}
 
