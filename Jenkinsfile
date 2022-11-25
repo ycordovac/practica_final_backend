@@ -126,7 +126,7 @@ spec:
             if(fileExists("practica_final_backend")){
                 sh 'rm -r practica_final_backend'
             }
-            sh 'mvn clean compile test'
+            sh 'mvn test'
             jacoco()
             junit target/surefire-reports/*.xml 
         }   
