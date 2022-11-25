@@ -89,17 +89,27 @@ spec:
     stage("Maven version to main branch"){
 			steps{
         script {
+          echo "begin when" 
           when{
             branch 'main'
+            echo "1"
               echo "eliminando etiqueta snapShot de la version para la rama main"
               def pomModel = readMavenPom
+              echo "2"
               def pomVersion = pomModel.getVersion().replace("-SNAPSHOT", "")
+              echo "3"
               def comand='mvn versions:set -DnewVersion='+$pomVersion
+              echo "4"
               sh comand
+              echo "5"
               sh 'git checkout main'
+              echo "6"
               sh 'git add .'
+              echo "7"
               sh '''git commit -m "delete tag snapshot from maven version"'''
+              echo "8"
               sh 'git push'
+              echo "9"
           }
 
         }
