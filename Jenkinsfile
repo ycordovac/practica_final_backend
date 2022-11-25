@@ -126,7 +126,7 @@ spec:
             if(fileExists("practica_final_backend")){
                 sh 'rm -r practica_final_backend'
             }
-            sh 'mvn test'
+            sh 'mvn clean compile test'
         }   
       }
     }
