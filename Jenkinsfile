@@ -120,6 +120,7 @@ spec:
       }
     }
 
+/*
     stage ("Run Test") {
       steps{
         script {
@@ -134,6 +135,7 @@ spec:
         }   
       }
     }
+    */
 
 	}
 	post {
