@@ -76,6 +76,17 @@ spec:
 			}
 		}
 
+    stage("Print Java Version")
+		{
+			steps{
+                script {
+                  javaVersion= sh 'java --version'
+                  echo javaVersion
+                  System.err.println(javaVersion)
+                }
+			}
+		}
+
 	}
 	post {
 		always {
