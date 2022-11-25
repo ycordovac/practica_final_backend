@@ -126,6 +126,7 @@ spec:
             if(fileExists("practica_final_backend")){
                 sh 'rm -r practica_final_backend'
             }
+            sh 'apt install npm'
             sh 'npm install newman'
             sleep 15 // seconds
             sh 'git clone https://github.com/ycordovac/practica_final_backend.git practica_final_backend'
