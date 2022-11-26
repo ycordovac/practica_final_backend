@@ -1,6 +1,6 @@
 def versionPom = ""
 pipeline{
-	  agent {
+	agent {
       kubernetes {
         yaml '''
 apiVersion: v1
@@ -124,7 +124,7 @@ spec:
       steps{
         script {
             sh 'mvn test'
-            junit target/surefire-reports/*.xml 
+            junit 'target/surefire-reports/*.xml' 
         }   
       }
     }
