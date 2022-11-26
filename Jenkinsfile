@@ -123,12 +123,16 @@ spec:
     stage ("Run Test") {
       steps{
         script {
-            if(fileExists("practica_final_backend")){
-                sh 'rm -r practica_final_backend'
-            }
             sh 'mvn test'
-            jacoco()
             junit target/surefire-reports/*.xml 
+        }   
+      }
+    }
+
+    stage ("Cobertura Jacoco") {
+      steps{
+        script {
+            jacoco()
         }   
       }
     }
