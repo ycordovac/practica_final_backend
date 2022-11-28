@@ -168,7 +168,7 @@ spec:
         }
   */
 
-      stage("Maven Build") {
+      stage("Maven Build and upload to Nexus repository") {
             steps {
                 script {
                     sh "mvn package -DskipTests=true"
@@ -177,7 +177,6 @@ spec:
         }
       }  
 
-      stage("Nexus Repository") {
         steps {
                 script {
                     pom = readMavenPom file: "pom.xml"
@@ -217,7 +216,7 @@ spec:
                     }
                 }
             }
-      }
+      
 
 	post {
 		always {
