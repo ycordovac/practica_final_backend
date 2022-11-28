@@ -168,6 +168,19 @@ spec:
         }
   */
 
+      stage("Quality Tests") {
+        steps {
+            script {
+              withSonarQubeEnv("sonarqube-server"){
+                sh 'mvn clean verify sonar:sonar \
+                -Dsonar.projectKey=practica-final-backend \
+                -Dsonar.host.url=http://192.168.58.2:9000 \
+                -Dsonar.login=squ_d4810d6d41f2c2c6bb7a6833a7ae0971867101f3'
+              }
+            }
+        }
+		  }
+
       stage("Maven Build") {
             steps {
                 script {
@@ -175,6 +188,8 @@ spec:
                 }
             }
       }
+
+      /*
       stage("Publish to Nexus") {
         steps {
           script {
@@ -217,8 +232,8 @@ spec:
             }
           }
         }
-		}
-      
+		  }
+      */
     }
     
       
