@@ -34,13 +34,12 @@ spec:
     }
 	stages {
 
-    stage('compile app') {
-      steps {
-            sh "mvn clean install -DskipTests"
-      }
-    }
+        stage('compile app') {
+          steps {
+                sh "mvn clean install -DskipTests"
+          }
+        }
 
-    /**
         stage('Push Image to Docker Hub') {
           steps {
             script {
@@ -63,29 +62,29 @@ spec:
           }
         }
 
-		stage("Deploy to K8s"){
-			steps{
-                script {
-                  if(fileExists("configuracion")){
-                    sh 'rm -r configuracion'
-                  }
-                }
+        stage("Deploy to K8s"){
+          steps{
+                    script {
+                      if(fileExists("configuracion")){
+                        sh 'rm -r configuracion'
+                      }
+                    }
 
-				sh 'git clone https://github.com/ycordovac/kubernetes-helm-docker-config.git configuracion --branch test-implementation'
-				sh 'kubectl apply -f configuracion/kubernetes-deployment/spring-boot-app/manifest.yml -n default --kubeconfig=configuracion/kubernetes-config/config'
-			}
-		}
-
-    stage("Print Java Version"){
-			steps{
-        script {
-          javaVersion= sh 'java --version'
-          echo javaVersion
-          mvnVersion= sh 'mvn -version'
-          echo mvnVersion
+            sh 'git clone https://github.com/ycordovac/kubernetes-helm-docker-config.git configuracion --branch test-implementation'
+            sh 'kubectl apply -f configuracion/kubernetes-deployment/spring-boot-app/manifest.yml -n default --kubeconfig=configuracion/kubernetes-config/config'
+          }
         }
-			}
-		}
+
+        stage("Print Java Version"){
+          steps{
+            script {
+              javaVersion= sh 'java --version'
+              echo javaVersion
+              mvnVersion= sh 'mvn -version'
+              echo mvnVersion
+            }
+          }
+        }
 
     /**
 
@@ -118,29 +117,29 @@ spec:
         }
 			}
 		}
-
+**/
    
 
-    stage ("Run Test") {
-      steps{
-        script {
-            sh 'mvn test'
-            junit 'target/surefire-reports/*.xml' 
-        }   
+      stage ("Run Test") {
+        steps{
+          script {
+              sh 'mvn test'
+              junit 'target/surefire-reports/*.xml' 
+          }   
+        }
       }
-    }
 
-    stage ("Cobertura Jacoco") {
-      steps{
-        script {
-            jacoco()
-        }   
+      stage ("Cobertura Jacoco") {
+        steps{
+          script {
+              jacoco()
+          }   
+        }
       }
-    }
 
     //------------------------------------------------------------------------------
 
-
+/*
 
         stage('SonarQube analysis') {
           steps {
