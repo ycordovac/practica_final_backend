@@ -31,6 +31,7 @@ spec:
     environment {
         registryCredential='yandihlg'
         registryBackend = 'yandihlg/backend-demo'
+        sonarcredential='admin'
     }
 	stages {
 
@@ -141,7 +142,7 @@ spec:
 
         stage('SonarQube analysis') {
           steps {
-            withSonarQubeEnv(credentialsId: "admin", installationName: "sonarqube-server"){
+            withSonarQubeEnv(credentialsId: sonarcredential, installationName: "sonarqube-server"){
                 sh "mvn clean verify sonar:sonar -DskipTests"
             }
           }
