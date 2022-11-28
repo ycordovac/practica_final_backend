@@ -35,7 +35,7 @@ spec:
 
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "nexus:8081"
+        NEXUS_URL = "192.168.58.3:8081"
         NEXUS_REPOSITORY = "backdevelop"
         NEXUS_CREDENTIAL_ID = "adminnexus"
     }
