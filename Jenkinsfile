@@ -174,7 +174,7 @@ spec:
                     sh "mvn package -DskipTests=true"
                 }
             }
-      
+      }
       stage("Uploa artefactory to nexus server"){
 
             steps {
@@ -223,7 +223,7 @@ spec:
                 }
             }
         }
-      }
+      
     }
     
       
