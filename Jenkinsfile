@@ -141,7 +141,7 @@ spec:
 
         stage('SonarQube analysis') {
           steps {
-            withSonarQubeEnv(credentialsId: "sonarqube-credentials", installationName: "sonarqube-server"){
+            withSonarQubeEnv(credentialsId: "sonar-credential", installationName: "sonarqube-server"){
                 sh "mvn clean verify sonar:sonar -DskipTests"
             }
           }
