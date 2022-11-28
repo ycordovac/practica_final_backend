@@ -174,7 +174,7 @@ spec:
               withSonarQubeEnv("sonarqube-server"){
                 sh 'mvn clean verify sonar:sonar \
                 -Dsonar.projectKey=practica-final-backend \
-                -Dsonar.host.url=https://gentle-grapes-switch-213-0-57-163.loca.lt \
+                -Dsonar.host.url=http://192.168.49.3:9000 \
                 -Dsonar.login=squ_d4810d6d41f2c2c6bb7a6833a7ae0971867101f3'
               }
             }
