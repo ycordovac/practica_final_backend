@@ -40,6 +40,7 @@ spec:
       }
     }
 
+    /**
         stage('Push Image to Docker Hub') {
           steps {
             script {
@@ -118,7 +119,7 @@ spec:
 			}
 		}
 
-    **/
+   
 
     stage ("Run Test") {
       steps{
@@ -136,7 +137,7 @@ spec:
         }   
       }
     }
-  
+     **/  
 
 	}
 	post {
