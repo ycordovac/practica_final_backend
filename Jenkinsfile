@@ -218,10 +218,11 @@ spec:
                 }
             }
       }
-	}
+
 	post {
 		always {
 			sh "docker logout"
 		}
 	}
+
 }
