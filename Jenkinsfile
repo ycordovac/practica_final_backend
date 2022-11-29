@@ -34,7 +34,7 @@ spec:
         sonarcredential='admin'
 
         DOCKERHUB_ID="yandihlg"
-        DOCKERHUB_CREDENTIALS=credentials(DOCKERHUB_ID)
+        DOCKERHUB_CREDENTIALS=credentials("yandihlg")
         DOCKER_IMAGE_NAME="yandihlg/practica-final-backend"
 
         NEXUS_VERSION = "nexus3"
