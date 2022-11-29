@@ -177,7 +177,7 @@ spec:
             }
       }
 
-      stage("Publish to Nexus") {
+      stage("Nexus") {
         steps {
           script {
           pom = readMavenPom file: "pom.xml"
@@ -216,7 +216,7 @@ spec:
         }
 		  }
 
-      stage("Build & Push"){
+      stage("Kaniko Build Push"){
 			steps { 
 				container('shell'){
 					script {
@@ -240,7 +240,7 @@ spec:
 				}
 			}
 		}
-  }    
+  
 
 	post {
 		always {
