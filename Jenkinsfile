@@ -222,7 +222,7 @@ spec:
 					echo "Aqui se construye la imagen"
 					script {
 						withCredentials([usernamePassword(credentialsId: "yandihlg", passwordVariable: "yandihlgPassword", usernameVariable: "yandiUser")]) {
-							AUTH = sh(script: """echo -n "${env.jenkins_dockerhubUser}:${env.jenkins_dockerhubPassword}" | base64""", returnStdout: true).trim()
+							AUTH = sh(script: """echo -n "${env.yandihlgUser}:${env.yandihlgPassword}" | base64""", returnStdout: true).trim()
 							command = """echo '{"auths": {"https://index.docker.io/v1/": {"auth": "${AUTH}"}}}' >> /kaniko/.docker/config.json"""
 							sh("""
 							set +x
