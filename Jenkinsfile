@@ -221,7 +221,7 @@ spec:
 				container('kaniko'){
 					echo "Aqui se construye la imagen"
 					script {
-						withCredentials([usernamePassword(credentialsId: "yandihlg", passwordVariable: "yandihlgPassword", usernameVariable: "yandiUser")]) {
+						withCredentials([usernamePassword(credentialsId: "yandihlg", passwordVariable: "yandihlgPassword", usernameVariable: "yandihlgUser")]) {
 							AUTH = sh(script: """echo -n "${env.yandihlgUser}:${env.yandihlgPassword}" | base64""", returnStdout: true).trim()
 							command = """echo '{"auths": {"https://index.docker.io/v1/": {"auth": "${AUTH}"}}}' >> /kaniko/.docker/config.json"""
 							sh("""
