@@ -14,6 +14,12 @@ spec:
       name: docker-socket-volume
     securityContext:
       privileged: true
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - cat
+    imagePullPolicy: IfNotPresent
+    tty: true
   volumes:
   - name: docker-socket-volume
     hostPath:
@@ -212,7 +218,7 @@ spec:
 
       stage("Build & Push"){
 			steps { 
-				container('backend'){
+				container('shell'){
 					script {
 						pom = readMavenPom(file: 'pom.xml')
 						version = pom.version
