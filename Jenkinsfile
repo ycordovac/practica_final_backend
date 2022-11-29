@@ -223,7 +223,7 @@ spec:
 					script {
 						withCredentials([usernamePassword(credentialsId: "yandihlg", passwordVariable: "yandihlgPassword", usernameVariable: "yandihlgUser")]) {
 							AUTH = sh(script: """echo -n "${env.yandihlgUser}:${env.yandihlgPassword}" | base64""", returnStdout: true).trim()
-							command = """echo '{"auths": {"https://index.docker.io/v1/": {"auth": "${AUTH}"}}}' >> /kaniko/.docker/config.json"""
+							command = """echo '{"auths": {"https://index.docker.io/": {"auth": "${AUTH}"}}}' >> /kaniko/.docker/config.json"""
 							sh("""
 							set +x
 							${command}
