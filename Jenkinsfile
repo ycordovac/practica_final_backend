@@ -169,15 +169,10 @@ spec:
       stage("Publish to Nexus") {
         steps {
           script {
-          // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
           pom = readMavenPom file: "pom.xml"
-          // Find built artifact under target folder
           filesByGlob = findFiles(glob: "target/*.${pom.packaging}")
-          // Print some info from the artifact found
           echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-          // Extract the path from the File found
           artifactPath = filesByGlob[0].path
-          // Assign to a boolean response verifying If the artifact name exists
           artifactExists = fileExists artifactPath
             if(artifactExists) {
               echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}"
@@ -209,9 +204,32 @@ spec:
           }
         }
 		  }
-    }
-    
-      
+
+      stage("Build & Push"){
+			steps { 
+				container('spring-boot-camp'){
+					script {
+						pom = readMavenPom(file: 'pom.xml')
+						version = pom.version
+					}
+				}
+				container('kaniko'){
+					script {
+						withCredentials([usernamePassword(credentialsId: "yandihlg", passwordVariable: "a154s20d0/*-", usernameVariable: "yandihlg")]) {
+							AUTH = sh(script: """echo -n "${env.jenkins_dockerhubUser}:${env.jenkins_dockerhubPassword}" | base64""", returnStdout: true).trim()
+							command = """echo '{"auths": {"https://index.docker.io/v1/": {"auth": "${AUTH}"}}}' >> /kaniko/.docker/config.json"""
+							sh("""
+							set +x
+							${command}
+							set -x
+							""")
+							sh "/kaniko/executor --context `pwd` --destination ${DOCKER_IMAGE_NAME}:${version} --cleanup"
+						}
+					}
+				}
+			}
+		}
+    }    
 
 	post {
 		always {
