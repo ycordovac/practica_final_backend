@@ -225,7 +225,6 @@ spec:
 					}
 				}
 				container('kaniko'){
-					echo "Aqui se construye la imagen"
 					script {
 						withCredentials([usernamePassword(credentialsId: "yandihlg", passwordVariable: "yandihlgPassword", usernameVariable: "yandihlgUser")]) {
 							AUTH = sh(script: """echo -n "${env.yandihlgUser}:${env.yandihlgPassword}" | base64""", returnStdout: true).trim()
@@ -235,7 +234,7 @@ spec:
 							${command}
 							set -x
 							""")
-							sh "/kaniko/executor --context `pwd` --destination ${DOCKER_IMAGE_NAME}:${version} --cleanup"
+							sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${DOCKER_IMAGE_NAME}:${version} --cleanup"
 						}
 					}
 				}
