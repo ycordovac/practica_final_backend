@@ -33,11 +33,16 @@ spec:
         registryBackend = 'yandihlg/backend-demo'
         sonarcredential='admin'
 
+        DOCKERHUB_ID="yandihlg"
+        DOCKERHUB_CREDENTIALS=credentials("yandihlg")
+        DOCKER_IMAGE_NAME="yandihlg/practica-final-backend"
+
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.49.4:8081"
         NEXUS_REPOSITORY = "backdevelop"
         NEXUS_CREDENTIAL_ID = "adminnexus"
+        version=null
     }
 	stages {
 
@@ -207,15 +212,16 @@ spec:
 
       stage("Build & Push"){
 			steps { 
-				container('spring-boot-camp'){
+				container('backend'){
 					script {
 						pom = readMavenPom(file: 'pom.xml')
 						version = pom.version
 					}
 				}
 				container('kaniko'){
+					echo "Aqui se construye la imagen"
 					script {
-						withCredentials([usernamePassword(credentialsId: "yandihlg", passwordVariable: "a154s20d0/*-", usernameVariable: "yandihlg")]) {
+						withCredentials([usernamePassword(credentialsId: DOCKERHUB_ID, passwordVariable: DOCKERHUB_CREDENTIALS_PWS, usernameVariable: DOCKERHUB_CREDENTIALS_USR)]) {
 							AUTH = sh(script: """echo -n "${env.jenkins_dockerhubUser}:${env.jenkins_dockerhubPassword}" | base64""", returnStdout: true).trim()
 							command = """echo '{"auths": {"https://index.docker.io/v1/": {"auth": "${AUTH}"}}}' >> /kaniko/.docker/config.json"""
 							sh("""
@@ -229,7 +235,7 @@ spec:
 				}
 			}
 		}
-    }    
+  }    
 
 	post {
 		always {
