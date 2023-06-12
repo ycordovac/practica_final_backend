@@ -1,0 +1,162 @@
+version: "3"
+
+services:
+ gw:
+    image: 10.20.32.214:5000/cfets/gw:6.0.47.3
+    environment:
+        LOGSTASH_TAGS: 'gw,CFETS'
+    ports:
+        - "3001:3001"
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /home/staff/logging/lab-log/mnt/logs/gw:/export/home/gateway/logs
+    networks:
+        - CFETS
+    deploy:
+        replicas: 1
+        restart_policy:
+            condition: on-failure
+            delay: 10s
+            max_attempts: 3
+        
+ broker_docker:
+    image: 10.20.32.214:5000/cfets/broker:10.2.5_CI
+    environment:
+        LOGSTASH_TAGS: 'broker,CFETS'
+    hostname: "broker_docker"
+    ports:
+        - "3050:3050"
+        - "3304:3304"
+        - "3308:3308"
+        - "3000:3000"
+        - "8115:8115"
+        - "3319:3319"
+        - "3011:3011"
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /home/staff/logging/lab-log/mnt/logs/broker:/export/home/brokernet/broker_install/logs
+    networks:
+        - CFETS
+    deploy:
+        replicas: 1
+        restart_policy:
+            condition: on-failure
+            delay: 10s
+            max_attempts: 3
+ broker_docker1:
+    image: 10.20.32.214:5000/cfets/broker_cli:10.2.5_CI
+    environment:
+        LOGSTASH_TAGS: 'broker,CFETS'
+    hostname: "broker_docker1"
+    ports:
+        - "3050:30501"
+        - "3304:33041"
+        - "3308:33081"
+        - "3000:30001"
+        - "8115:81151"
+        - "3319:33191"
+        - "3011:30111"
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /home/staff/logging/lab-log/mnt/logs/broker1:/export/home/brokernet/broker_install/logs
+    networks:
+        - CFETS
+    deploy:
+        replicas: 1
+        restart_policy:
+            condition: on-failure
+            delay: 10s
+            max_attempts: 3
+
+
+ ems:
+    image: 10.20.32.214:5000/cfets/ems:4.0.160.3
+    environment:
+        LOGSTASH_TAGS: 'ems,CFETS'
+    ports:
+        - "3557:3557"
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /home/staff/logging/lab-log/mnt/logs/ems:/export/home/ems/EMS/logs
+    networks:
+        - CFETS
+    deploy:
+        replicas: 1
+        restart_policy:
+            condition: on-failure
+            delay: 10s
+            max_attempts: 3
+    
+ lpa:
+    image: 10.20.32.214:5000/cfets/lpaimix:4.0.1.9.4
+    environment:
+        LOGSTASH_TAGS: 'lpa,CFETS'
+  #  extra_hosts:
+  #      - "TLB2p.em.icap.com:broker_docker"
+    ports:
+        - "10000:10000"
+        - "10001:10001"
+        - "10002:10002"
+        - "10003:10003"
+        - "10004:10004"
+        - "10005:10005"
+        - "10006:10006"
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /home/staff/logging/lab-log/mnt/logs/lpa/tier1:/export/home/lpaimix/imix/logs/tier1
+        - /home/staff/logging/lab-log/mnt/logs/lpa/tier2:/export/home/lpaimix/imix/logs/tier2
+        - /home/staff/logging/lab-log/mnt/logs/lpa/tier3:/export/home/lpaimix/imix/logs/tier3
+        - /home/staff/logging/lab-log/mnt/logs/lpa/tier4:/export/home/lpaimix/imix/logs/tier4
+        - /home/staff/logging/lab-log/mnt/logs/lpa/tier5:/export/home/lpaimix/imix/logs/tier5
+    networks:
+        - CFETS
+    labels:
+        com.docker.stack.namespace: "CFETS"
+        com.docker.service.name: "lpa"
+    deploy:
+        replicas: 1
+        restart_policy:
+            condition: on-failure
+            delay: 10s
+            max_attempts: 3
+        labels:
+            com.docker.stack.namespace: "CFETS"
+            com.docker.service.name: "lpa"
+
+ tt:
+    image: 10.20.32.214:5000/cfets/tt-engine:4.0.1.3
+    environment:
+        LOGSTASH_TAGS: 'tt,CFETS'
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /home/staff/logging/lab-log/mnt/logs/tt:/export/home/testtool/current/target/logs
+    networks:
+        - CFETS
+    labels:
+        com.docker.stack.namespace: "CFETS"
+        com.docker.service.name: "tt"
+    deploy:
+        replicas: 1
+        restart_policy:
+            condition: on-failure
+            delay: 10s
+            max_attempts: 3
+        labels:
+            com.docker.stack.namespace: "CFETS"
+            com.docker.service.name: "tt"
+
+
+ filebeat:
+    image: willfarrell/filebeat:5
+    volumes:
+      - "/home/staff/logging/lab-log/filebeat.yml:/etc/filebeat/filebeat.yml:rw"
+      - "/home/staff/logging/lab-log/mnt/logs:/mnt/logs"
+    networks:
+        - CFETS
+    labels:
+      com.docker.stack.namespace: "filebeat"
+      com.docker.service.name: "CFETS"
+
+
+networks:
+  CFETS:
